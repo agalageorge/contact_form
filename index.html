@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Contact Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-image: url('images/bg1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .contact-container {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 1, 0.5);
+            width: 100%;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <h2>Contact Us</h2>
+        <div id="validationMessage" class="validation-message"></div>
+        <form id="contactForm" onsubmit="return validateForm(event)">
+            <div class="form-group">
+                <input type="text" id="fullName" name="fullName" required placeholder=" ">
+                <label for="fullName">Full Name</label>
+                <div id="fullNameError" class="error">Please enter your full name</div>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" name="email" required placeholder=" ">
+                <label for="email">Email Address</label>
+                <div id="emailError" class="error">Please enter a valid email address</div>
+            </div>
+            <div class="form-group">
+                <input type="text" id="subject" name="subject" required placeholder=" ">
+                <label for="subject">Subject</label>
+                <div id="subjectError" class="error">Please enter a subject</div>
+            </div>
+            <div class="form-group">
+                <textarea id="message" name="message" required placeholder=" "></textarea>
+                <label for="message">Message</label>
+                <div id="messageError" class="error">Please enter your message</div>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm(event) {
+            event.preventDefault();
+            let isValid = true;
+            const validationMessage = document.getElementById('validationMessage');
+
+            // Reset error messages and validation message
+            document.querySelectorAll('.error').forEach(error => error.style.display = 'none');
+            validationMessage.style.display = 'none';
+            validationMessage.className = 'validation-message';
+
+            // Full Name validation
+            const fullName = document.getElementById('fullName').value.trim();
+            if (!fullName) {
+                document.getElementById('fullNameError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Email validation
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!email || !emailRegex.test(email)) {
+                document.getElementById('emailError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Subject validation
+            const subject = document.getElementById('subject').value.trim();
+            if (!subject) {
+                document.getElementById('subjectError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Message validation
+            const message = document.getElementById('message').value.trim();
+            if (!message) {
+                document.getElementById('messageError').style.display = 'block';
+                isValid = false;
+            }
+
+            // Display validation status
+            if (isValid) {
+                validationMessage.textContent = 'Form submitted successfully!';
+                validationMessage.className = 'validation-message success';
+                document.getElementById('contactForm').reset();
+                // Hide success message after 10 seconds
+                setTimeout(() => {
+                    validationMessage.style.display = 'none';
+                    validationMessage.className = 'validation-message';
+                    validationMessage.textContent = '';
+                }, 5000);
+            } else {
+                validationMessage.textContent = 'Please fill out all fields correctly.';
+                validationMessage.className = 'validation-message error';
+            }
+            validationMessage.style.display = 'block';
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>
